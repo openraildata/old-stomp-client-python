@@ -58,7 +58,8 @@ sample XML results:
         <uR updateOrigin="TD">
                 <TS rid="201505100725954" uid="Y62668" ssd="2015-05-10">
                         <fc:Location tpl="MEADWHL" wta="18:15:30" wtd="18:16:30" pta="18:16" ptd="18:16">
-                                <fc:arr et="18:16" wet="18:14" src="TD" /><fc:dep et="18:16" src="Darwin" />
+                                <fc:arr et="18:16" wet="18:14" src="TD" />
+                                <fc:dep et="18:16" src="Darwin" />
                                 <fc:plat platsrc="M">2</fc:plat>
                         </fc:Location>
                 </TS>
