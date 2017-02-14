@@ -8,36 +8,41 @@ Raise issues if you encounter any problems.
 
 ```python
 
-import stomp, gzip, StringIO, xml
-
+import stomp, gzip, io 
+from bs4 import BeautifulSoup
+ 
 class MyListener(object):
         #
         # def __init__ (self, conn):
         #       self._conn = conn
-
+ 
         def on_error(self, headers, message):
                 print('received an error %s' % message)
-
+ 
         def on_message(self, headers, message):
-                fp = gzip.GzipFile(fileobj = StringIO.StringIO(message))
-                text = fp.readlines()
+                #print (message)
+                fp = gzip.GzipFile(fileobj = io.BytesIO(bytes(message)))
+                text = fp.read()
                 fp.close()
-                print('%s\n' % text)
-
+                soup = BeautifulSoup(text, 'html.parser')
+                print("="*60)
+                print(soup.prettify())
+                print("="*60)
+ 
         #       self._conn.ack(id=headers['message-id'], subscription=headers['subscription'])
-
-conn = stomp.Connection([('datafeeds.nationalrail.co.uk', 61613)])
-
+ 
+conn = stomp.Connection([('datafeeds.nationalrail.co.uk', 61613)], auto_decode=False)
+ 
 conn.set_listener('', MyListener())
 conn.start()
 conn.connect(username = 'd3user', passcode = 'd3password', wait=False)
-
+ 
 conn.subscribe(destination='/queue/<your GUID queue>', id=1, ack='auto')
-
+ 
 #conn.send(body=' '.join(sys.argv[1:]), destination='')
-
-mydata = raw_input('Prompt :')
-
+ 
+mydata = input('Prompt :')
+ 
 conn.disconnect()
 
 
